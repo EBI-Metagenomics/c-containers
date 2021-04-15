@@ -4,15 +4,15 @@ static int errors = 0;
 
 struct foo {
   int val;
-  queue_node_t node;
+  struct node node;
 };
 
 int main(void) {
   struct queue queue = QUEUE_INIT(queue);
 
-  struct foo foo1 = {1, QUEUE_NODE_INIT()};
-  struct foo foo2 = {2, QUEUE_NODE_INIT()};
-  struct foo foo3 = {3, QUEUE_NODE_INIT()};
+  struct foo foo1 = {1, NODE_INIT()};
+  struct foo foo2 = {2, NODE_INIT()};
+  struct foo foo3 = {3, NODE_INIT()};
 
   errors += !queue_empty(&queue);
   queue_put(&queue, &foo1.node);
@@ -20,7 +20,7 @@ int main(void) {
   queue_put(&queue, &foo3.node);
 
   struct foo *entry = NULL;
-  queue_iter_t iter = queue_iter(&queue);
+  struct iter iter = queue_iter(&queue);
   int const vals[] = {1, 2, 3};
   int const *val = vals;
   ITER_FOREACH(entry, &iter, node) {

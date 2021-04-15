@@ -2,39 +2,22 @@
 #define ITER_H
 
 #include "container.h"
-#include "dnode.h"
-#include "snode.h"
+#include "node.h"
 
-struct iter_dnode {
-  struct dnode *curr;
-  struct dnode const *end;
+struct iter {
+  struct node *curr;
+  struct node const *end;
 };
 
-struct iter_snode {
-  struct snode *curr;
-  struct snode const *end;
-};
-
-static inline struct dnode *iter_dnode_next(struct iter_dnode *iter) {
+static inline struct node *iter_node_next(struct iter *iter) {
   if (iter->curr == iter->end)
     return NULL;
-  struct dnode *node = iter->curr;
+  struct node *node = iter->curr;
   iter->curr = node->next;
   return node;
 }
 
-static inline struct snode *iter_snode_next(struct iter_snode *iter) {
-  if (iter->curr == iter->end)
-    return NULL;
-  struct snode *node = iter->curr;
-  iter->curr = node->next;
-  return node;
-}
-
-#define iter_next(x)                                                           \
-  _Generic((x), struct iter_snode *                                            \
-           : iter_snode_next, struct iter_dnode *                              \
-           : iter_dnode_next)(x)
+#define iter_next(x) _Generic((x), struct iter * : iter_node_next)(x)
 
 #define ITER_FOREACH(entry, iter, member)                                      \
   for (entry = container_of_safe(iter_next(iter), __typeof__(*entry), member); \

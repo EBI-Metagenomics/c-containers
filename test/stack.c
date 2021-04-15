@@ -4,15 +4,15 @@ static int errors = 0;
 
 struct foo {
   int val;
-  stack_node_t node;
+  struct node node;
 };
 
 int main(void) {
   struct stack stack = STACK_INIT();
 
-  struct foo foo1 = {1, STACK_NODE_INIT()};
-  struct foo foo2 = {2, STACK_NODE_INIT()};
-  struct foo foo3 = {3, STACK_NODE_INIT()};
+  struct foo foo1 = {1, NODE_INIT()};
+  struct foo foo2 = {2, NODE_INIT()};
+  struct foo foo3 = {3, NODE_INIT()};
 
   errors += !stack_empty(&stack);
   stack_put(&stack, &foo1.node);
@@ -20,7 +20,7 @@ int main(void) {
   stack_put(&stack, &foo3.node);
 
   struct foo *entry = NULL;
-  stack_iter_t iter = stack_iter(&stack);
+  struct iter iter = stack_iter(&stack);
   int const vals[] = {3, 2, 1};
   int const *val = vals;
   ITER_FOREACH(entry, &iter, node) {

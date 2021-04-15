@@ -4,15 +4,15 @@ static int errors = 0;
 
 struct foo {
   int val;
-  struct snode node;
+  stack_node_t node;
 };
 
 int main(void) {
-  struct stack stack = STACK_INIT(stack);
+  struct stack stack = STACK_INIT();
 
-  struct foo foo1 = {1, SNODE_INIT()};
-  struct foo foo2 = {2, SNODE_INIT()};
-  struct foo foo3 = {3, SNODE_INIT()};
+  struct foo foo1 = {1, STACK_NODE_INIT()};
+  struct foo foo2 = {2, STACK_NODE_INIT()};
+  struct foo foo3 = {3, STACK_NODE_INIT()};
 
   errors += !stack_empty(&stack);
   stack_put(&stack, &foo1.node);

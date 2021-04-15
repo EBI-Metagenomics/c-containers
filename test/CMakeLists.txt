@@ -18,3 +18,4 @@ function(container_add_test name srcs)
 endfunction()
 
 container_add_test(stack stack.c)
+container_add_test(queue queue.c)

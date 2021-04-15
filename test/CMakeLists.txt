@@ -17,5 +17,6 @@ function(container_add_test name srcs)
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
-container_add_test(stack stack.c)
+container_add_test(hash hash.c)
 container_add_test(queue queue.c)
+container_add_test(stack stack.c)

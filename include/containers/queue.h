@@ -41,4 +41,12 @@ static inline void queue_put(struct queue *queue, struct node *novel) {
   queue->head.next = novel;
 }
 
+static inline void queue_put_first(struct queue *queue, struct node *novel) {
+  struct node *tail = queue->tail;
+  novel->next = tail;
+  queue->tail = novel;
+  if (queue->head.next == &queue->head)
+    queue->head.next = novel;
+}
+
 #endif

@@ -19,7 +19,10 @@ static inline struct node *iter_node_next(struct iter *iter) {
 
 #define iter_next(x) _Generic((x), struct iter * : iter_node_next)(x)
 
-#define ITER_FOREACH(entry, iter, member)                                      \
+#define iter_for_each(pos, iter, member)                                       \
+  for (pos = iter_next(iter); pos; pos = iter_next(iter))
+
+#define iter_for_each_entry(entry, iter, member)                               \
   for (entry = container_of_safe(iter_next(iter), __typeof__(*entry), member); \
        entry;                                                                  \
        entry = container_of_safe(iter_next(iter), __typeof__(*entry), member))

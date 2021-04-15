@@ -23,7 +23,7 @@ int main(void) {
   struct iter iter = stack_iter(&stack);
   int const vals[] = {3, 2, 1};
   int const *val = vals;
-  ITER_FOREACH(entry, &iter, node) {
+  iter_for_each_entry(entry, &iter, node) {
     errors += entry->val != *val;
     val++;
   }

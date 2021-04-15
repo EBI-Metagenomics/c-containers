@@ -13,6 +13,8 @@ int main(void) {
   struct foo foo1 = {1, NODE_INIT()};
   struct foo foo2 = {2, NODE_INIT()};
   struct foo foo3 = {3, NODE_INIT()};
+  struct foo foo4 = {4, NODE_INIT()};
+  struct foo foo5 = {5, NODE_INIT()};
 
   errors += !queue_empty(&queue);
   queue_put(&queue, &foo1.node);
@@ -23,7 +25,7 @@ int main(void) {
   struct iter iter = queue_iter(&queue);
   int const vals[] = {1, 2, 3};
   int const *val = vals;
-  ITER_FOREACH(entry, &iter, node) {
+  iter_for_each_entry(entry, &iter, node) {
     errors += entry->val != *val;
     val++;
   }
@@ -52,6 +54,19 @@ int main(void) {
   queue_put(&queue, &foo3.node);
   errors += container_of(queue_pop(&queue), struct foo, node)->val != 3;
   errors += !queue_empty(&queue);
+
+  queue_put(&queue, &foo1.node);
+  queue_put(&queue, &foo2.node);
+  queue_put(&queue, &foo3.node);
+  queue_put_first(&queue, &foo4.node);
+  queue_put_first(&queue, &foo5.node);
+
+  int const vals2[] = {5, 4, 1, 2, 3};
+  val = vals2;
+  iter_for_each_entry(entry, &iter, node) {
+    errors += entry->val != *val;
+    val++;
+  }
 
   return errors;
 }

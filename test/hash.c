@@ -164,7 +164,7 @@ static inline uint32_t next_rand(uint32_t val) {
     }                                                                          \
     float freq = ((float)nitems) / HASH_SIZE(tbl_##bits);                      \
     float d = freq * 5 + 2;                                                    \
-    unsigned left = (unsigned)(freq > d ? 0 : freq - d);                       \
+    unsigned left = (unsigned)(freq < d ? 0 : freq - d);                       \
     unsigned right = (unsigned)(freq + d);                                     \
                                                                                \
     errors += min_nitems < left;                                               \

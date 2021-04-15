@@ -1,5 +1,5 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#ifndef CONTAINERS_CONTAINER_OF_H
+#define CONTAINERS_CONTAINER_OF_H
 
 #include <stddef.h>
 

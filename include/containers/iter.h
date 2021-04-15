@@ -1,8 +1,8 @@
-#ifndef ITER_H
-#define ITER_H
+#ifndef CONTAINERS_ITER_H
+#define CONTAINERS_ITER_H
 
-#include "container.h"
-#include "node.h"
+#include "containers/container_of.h"
+#include "containers/node.h"
 
 struct iter {
   struct node *curr;

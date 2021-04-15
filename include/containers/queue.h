@@ -1,8 +1,8 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef CONTAINERS_QUEUE_H
+#define CONTAINERS_QUEUE_H
 
-#include "iter.h"
-#include "node.h"
+#include "containers/iter.h"
+#include "containers/node.h"
 #include <stdbool.h>
 
 struct queue {

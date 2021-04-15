@@ -1,6 +1,5 @@
-#include "container/hash.h"
+#include "containers/containers.h"
 #include <limits.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static int errors = 0;
@@ -8,7 +7,7 @@ static int errors = 0;
 struct foo {
   int key;
   int val;
-  struct hash_node node;
+  struct hnode node;
 };
 
 HASH_DECLARE(tbl_1, 1);
@@ -52,10 +51,10 @@ static void simple_tests(void) {
   HASH_DECLARE(tbl, 3);
   hash_init(tbl);
 
-  struct foo foo0 = {0, 0, HASH_NODE_INIT()};
-  struct foo foo1 = {1, 1, HASH_NODE_INIT()};
-  struct foo foo2 = {2, 2, HASH_NODE_INIT()};
-  struct foo foo3 = {-1, 3, HASH_NODE_INIT()};
+  struct foo foo0 = {0, 0, HNODE_INIT()};
+  struct foo foo1 = {1, 1, HNODE_INIT()};
+  struct foo foo2 = {2, 2, HNODE_INIT()};
+  struct foo foo3 = {-1, 3, HNODE_INIT()};
 
   errors += !hash_empty(tbl);
   hash_add(tbl, &foo0.node, foo0.key);
@@ -80,7 +79,7 @@ static void simple_tests(void) {
     errors += foo->val != 0;
   }
 
-  struct foo foo4 = {-1, 4, HASH_NODE_INIT()};
+  struct foo foo4 = {-1, 4, HNODE_INIT()};
   hash_add(tbl, &foo4.node, foo4.key);
 
   int count = 0;
@@ -91,7 +90,7 @@ static void simple_tests(void) {
   }
   errors += count != 2;
 
-  struct hash_node *tmp = NULL;
+  struct hnode *tmp = NULL;
   hash_for_each_possible_safe(tbl, foo, tmp, node, -1) {
     errors += foo->key != -1;
     if (foo->val == 4)

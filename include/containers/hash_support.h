@@ -1,5 +1,5 @@
-#ifndef MISC_H
-#define MISC_H
+#ifndef CONTAINERS_HASH_SUPPORT_H
+#define CONTAINERS_HASH_SUPPORT_H
 
 #include <stdint.h>
 

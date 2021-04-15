@@ -1,8 +1,8 @@
-#ifndef STACK_H
-#define STACK_H
+#ifndef CONTAINERS_STACK_H
+#define CONTAINERS_STACK_H
 
-#include "iter.h"
-#include "node.h"
+#include "containers/iter.h"
+#include "containers/node.h"
 #include <stdbool.h>
 
 struct stack {

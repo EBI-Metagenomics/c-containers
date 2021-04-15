@@ -1,8 +1,8 @@
 #ifndef HASH_H
 #define HASH_H
 
-#include "misc.h"
 #include "container.h"
+#include "misc.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -19,7 +19,8 @@ struct hash_node {
 
 #define HASH_DECLARE(name, bits) struct hash_list name[1 << (bits)]
 
-#define HASH_NODE_INIT() { NULL, NULL }
+#define HASH_NODE_INIT()                                                       \
+  { NULL, NULL }
 
 /**
  * hash_init - initialize a hash table

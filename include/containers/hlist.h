@@ -32,6 +32,16 @@ static inline void __hlist_add(struct hnode *n, struct hlist *h) {
   n->pprev = &h->first;
 }
 
+/**
+ * hlist_unhashed - Has node been removed from list and reinitialized?
+ * @h: Node to be checked
+ *
+ * Not that not all removal functions will leave a node in unhashed
+ * state.  For example, hlist_nulls_del_init_rcu() does leave the
+ * node in unhashed state, but hlist_nulls_del() does not.
+ */
+static inline int hlist_unhashed(struct hnode const *h) { return !h->pprev; }
+
 #define hlist_entry(ptr, type, member) container_of(ptr, type, member)
 
 #define hlist_entry_safe(ptr, type, member)                                    \

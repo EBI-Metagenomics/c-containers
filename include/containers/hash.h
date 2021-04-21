@@ -60,6 +60,14 @@ static inline bool __hash_empty(struct hlist *ht, unsigned sz) {
 static inline void hash_del(struct hnode *node) { hnode_del_init(node); }
 
 /**
+ * hash_hashed - check whether an object is in any hashtable
+ * @node: the &struct hlist_node of the object to be checked
+ */
+static inline bool hash_hashed(struct hnode const *node) {
+  return !hlist_unhashed(node);
+}
+
+/**
  * hash_for_each_safe - iterate over a hashtable safe against removal of
  * hash entry
  * @name: hashtable to iterate

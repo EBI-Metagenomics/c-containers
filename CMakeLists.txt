@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(containers VERSION 0.0.2 LANGUAGES C)
+project(containers VERSION 0.0.3 LANGUAGES C)
 
 # Generate compile_commands.json file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -11,7 +11,6 @@ target_include_directories(containers INTERFACE
   $<INSTALL_INTERFACE:include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-set_target_properties(containers PROPERTIES VERSION ${PROJECT_VERSION})
 
 install(TARGETS containers EXPORT containers-targets)
 install(DIRECTORY include/ DESTINATION include)

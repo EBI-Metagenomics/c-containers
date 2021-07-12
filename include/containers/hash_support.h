@@ -68,7 +68,7 @@ static inline unsigned fls64(uint64_t x) {
 #endif
 }
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
+#define __CC_ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 
 #define UNSIGNED(x)                                                            \
   _Generic((x), char                                                           \
@@ -115,6 +115,6 @@ static inline uint32_t hash_64(uint64_t val, unsigned bits) {
   (sizeof(x) <= 4 ? hash_32(UNSIGNED(x), bits) : hash_64(UNSIGNED(x), bits))
 
 #define HASH_BITS(name) ilog2(HASH_SIZE(name))
-#define HASH_SIZE(name) (ARRAY_SIZE(name))
+#define HASH_SIZE(name) (__CC_ARRAY_SIZE(name))
 
 #endif

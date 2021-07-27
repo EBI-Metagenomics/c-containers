@@ -1,4 +1,4 @@
-#include "containers/containers.h"
+#include "cco/cco.h"
 
 static int errors = 0;
 
@@ -30,30 +30,29 @@ int main(void) {
     val++;
   }
 
-  errors += cco_container_of(cco_queue_pop(&queue), struct foo, node)->val != 1;
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 1;
   errors += cco_queue_empty(&queue);
-  errors += cco_container_of(cco_queue_pop(&queue), struct foo, node)->val != 2;
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 2;
   errors += cco_queue_empty(&queue);
 
   cco_queue_put(&queue, &foo2.node);
   cco_queue_put(&queue, &foo1.node);
 
-  errors += cco_container_of(cco_queue_pop(&queue), struct foo, node)->val != 3;
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 3;
   errors += cco_queue_empty(&queue);
-  errors += cco_container_of(cco_queue_pop(&queue), struct foo, node)->val != 2;
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 2;
   errors += cco_queue_empty(&queue);
 
   iter = cco_queue_iter(&queue);
-  errors += cco_container_of(cco_iter_next(&iter), struct foo, node)->val != 1;
+  errors += cco_of(cco_iter_next(&iter), struct foo, node)->val != 1;
   errors += cco_queue_empty(&queue);
-  errors +=
-      cco_container_of_safe(cco_iter_next(&iter), struct foo, node) != NULL;
+  errors += cco_of_safe(cco_iter_next(&iter), struct foo, node) != NULL;
 
   cco_queue_pop(&queue);
   errors += !cco_queue_empty(&queue);
 
   cco_queue_put(&queue, &foo3.node);
-  errors += cco_container_of(cco_queue_pop(&queue), struct foo, node)->val != 3;
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 3;
   errors += !cco_queue_empty(&queue);
 
   cco_queue_put(&queue, &foo1.node);

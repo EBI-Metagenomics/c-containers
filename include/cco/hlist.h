@@ -1,7 +1,7 @@
-#ifndef CONTAINERS_HLIST_H
-#define CONTAINERS_HLIST_H
+#ifndef CCO_HLIST_H
+#define CCO_HLIST_H
 
-#include "containers/hnode.h"
+#include "cco/hnode.h"
 
 struct cco_hlist {
   struct cco_hnode *first;
@@ -46,7 +46,7 @@ static inline int cco_hlist_unhashed(struct cco_hnode const *h) {
   return !h->pprev;
 }
 
-#define cco_hlist_entry(ptr, type, member) cco_container_of(ptr, type, member)
+#define cco_hlist_entry(ptr, type, member) cco_of(ptr, type, member)
 
 #define cco_hlist_entry_safe(ptr, type, member)                                \
   ({                                                                           \

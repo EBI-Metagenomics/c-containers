@@ -1,8 +1,8 @@
-#ifndef CONTAINERS_ITER_H
-#define CONTAINERS_ITER_H
+#ifndef CCO_ITER_H
+#define CCO_ITER_H
 
-#include "containers/container_of.h"
-#include "containers/node.h"
+#include "cco/node.h"
+#include "cco/of.h"
 
 struct cco_iter {
   struct cco_node *curr;
@@ -17,11 +17,10 @@ static inline struct cco_node *cco_iter_next(struct cco_iter *iter) {
   return node;
 }
 
-#define cco_iter_entry(pos, type, member)                                      \
-  cco_container_of_safe(pos, type, member)
+#define cco_iter_entry(pos, type, member) cco_of_safe(pos, type, member)
 
 #define cco_iter_next_entry(iter, entry, member)                               \
-  cco_container_of_safe(cco_iter_next(iter), __typeof__(*entry), member)
+  cco_of_safe(cco_iter_next(iter), __typeof__(*entry), member)
 
 #define cco_iter_for_each(pos, iter, member)                                   \
   for (pos = cco_iter_next(iter); pos; pos = cco_iter_next(iter))

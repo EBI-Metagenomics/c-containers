@@ -1,9 +1,9 @@
-#ifndef CONTAINERS_HASH_H
-#define CONTAINERS_HASH_H
+#ifndef CCO_HASH_H
+#define CCO_HASH_H
 
-#include "containers/container_of.h"
-#include "containers/hash_support.h"
-#include "containers/hlist.h"
+#include "cco/hash_support.h"
+#include "cco/hlist.h"
+#include "cco/of.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

@@ -1,8 +1,8 @@
-#ifndef CONTAINERS_QUEUE_H
-#define CONTAINERS_QUEUE_H
+#ifndef CCO_QUEUE_H
+#define CCO_QUEUE_H
 
-#include "containers/iter.h"
-#include "containers/node.h"
+#include "cco/iter.h"
+#include "cco/node.h"
 #include <stdbool.h>
 
 struct cco_queue {

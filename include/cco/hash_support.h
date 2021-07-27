@@ -1,5 +1,5 @@
-#ifndef CONTAINERS_HASH_SUPPORT_H
-#define CONTAINERS_HASH_SUPPORT_H
+#ifndef CCO_HASH_SUPPORT_H
+#define CCO_HASH_SUPPORT_H
 
 #include <stdint.h>
 

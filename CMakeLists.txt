@@ -1,33 +1,33 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(containers VERSION 0.0.4 LANGUAGES C)
+project(
+  cco
+  VERSION 0.0.5
+  LANGUAGES C)
 
 # Generate compile_commands.json file
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_library(containers INTERFACE)
-add_library(CONTAINERS::containers ALIAS containers)
-target_compile_features(containers INTERFACE c_std_11)
-target_include_directories(containers INTERFACE
-  $<INSTALL_INTERFACE:include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-)
+add_library(cco INTERFACE)
+add_library(CCO::cco ALIAS cco)
+target_compile_features(cco INTERFACE c_std_11)
+target_include_directories(
+  cco INTERFACE $<INSTALL_INTERFACE:include>
+                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-install(TARGETS containers EXPORT containers-targets)
+install(TARGETS cco EXPORT cco-targets)
 install(DIRECTORY include/ DESTINATION include)
-install(EXPORT containers-targets
-  FILE containers-targets.cmake
-  NAMESPACE CONTAINERS::
-  DESTINATION lib/cmake/containers
-)
+install(
+  EXPORT cco-targets
+  FILE cco-targets.cmake
+  NAMESPACE CCO::
+  DESTINATION lib/cmake/cco)
 include(CMakePackageConfigHelpers)
-configure_package_config_file(containers-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/containers-config.cmake
-  INSTALL_DESTINATION lib/cmake/containers
-  NO_SET_AND_CHECK_MACRO
-)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/containers-config.cmake
-  DESTINATION lib/cmake/containers
-)
+configure_package_config_file(
+  cco-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cco-config.cmake
+  INSTALL_DESTINATION lib/cmake/cco
+  NO_SET_AND_CHECK_MACRO)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cco-config.cmake
+        DESTINATION lib/cmake/cco)
 
 enable_testing()
 add_subdirectory(test)

@@ -1,8 +1,8 @@
-#ifndef CONTAINERS_STACK_H
-#define CONTAINERS_STACK_H
+#ifndef CCO_STACK_H
+#define CCO_STACK_H
 
-#include "containers/iter.h"
-#include "containers/node.h"
+#include "cco/iter.h"
+#include "cco/node.h"
 #include <stdbool.h>
 
 struct cco_stack {

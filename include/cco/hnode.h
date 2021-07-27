@@ -1,5 +1,5 @@
-#ifndef CONTAINERS_HNODE_H
-#define CONTAINERS_HNODE_H
+#ifndef CCO_HNODE_H
+#define CCO_HNODE_H
 
 #include <stddef.h>
 

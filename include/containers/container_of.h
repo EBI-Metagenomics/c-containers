@@ -4,20 +4,21 @@
 #include <stddef.h>
 
 /**
- * container_of - cast a member of a structure out to the containing structure
+ * cco_container_of - cast a member of a structure out to the containing
+ * structure
  * @ptr:	the pointer to the member.
  * @type:	the type of the container struct this is embedded in.
  * @member:	the name of the member within the struct.
  *
  */
-#define container_of(ptr, type, member)                                        \
+#define cco_container_of(ptr, type, member)                                    \
   ({                                                                           \
     char *__mptr = (char *)(ptr);                                              \
     ((type *)(__mptr - offsetof(type, member)));                               \
   })
 
 /**
- * container_of_safe - cast a member of a structure out to the containing
+ * cco_container_of_safe - cast a member of a structure out to the containing
  * structure
  * @ptr:	the pointer to the member.
  * @type:	the type of the container struct this is embedded in.
@@ -25,7 +26,7 @@
  *
  * Return NULL if ptr is NULL.
  */
-#define container_of_safe(ptr, type, member)                                   \
+#define cco_container_of_safe(ptr, type, member)                               \
   ({                                                                           \
     char *__mptr = (char *)(ptr);                                              \
     __mptr == NULL ? (type *)__mptr                                            \

@@ -8,67 +8,69 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define HASH_DECLARE(name, bits) struct hlist name[1 << (bits)]
+#define CCO_HASH_DECLARE(name, bits) struct cco_hlist name[1 << (bits)]
 
 /**
- * hash_init - initialize a hash table
- * @hashtable: hashtable to be initialized
+ * cco_hash_init - initialize a hash table
+ * @ht: hashtable to be initialized
  *
  * Calculates the size of the hashtable from the given parameter, otherwise
  * same as hash_init_size.
  *
- * This has to be a macro since HASH_BITS() will not work on pointers since
+ * This has to be a macro since CCO_HASH_BITS() will not work on pointers since
  * it calculates the size during preprocessing.
  */
-static inline void __hash_init(struct hlist *ht, unsigned sz) {
+static inline void __cco_hash_init(struct cco_hlist *ht, unsigned sz) {
   for (unsigned i = 0; i < sz; i++)
-    HLIST_INIT(&ht[i]);
+    CCO_HLIST_INIT(&ht[i]);
 }
 
-#define hash_init(hashtable) __hash_init(hashtable, HASH_SIZE(hashtable))
+#define cco_hash_init(ht) __cco_hash_init(ht, CCO_HASH_SIZE(ht))
 
 /**
- * hash_add - add an object to a hashtable
- * @hashtable: hashtable to add to
+ * cco_hash_add - add an object to a hashtable
+ * @ht: hashtable to add to
  * @node: the &struct hnode of the object to be added
  * @key: the key of the object to be added
  */
-#define hash_add(hashtable, node, key)                                         \
-  __hlist_add(node, &hashtable[hash_min(key, HASH_BITS(hashtable))])
+#define cco_hash_add(ht, node, key)                                            \
+  __cco_hlist_add(node, &ht[cco_hash_min(key, CCO_HASH_BITS(ht))])
 
-static inline bool __hash_empty(struct hlist *ht, unsigned sz) {
+static inline bool __cco_hash_empty(struct cco_hlist *ht, unsigned sz) {
   for (unsigned i = 0; i < sz; i++)
-    if (!hlist_empty(&ht[i]))
+    if (!cco_hlist_empty(&ht[i]))
       return false;
 
   return true;
 }
 
 /**
- * hash_empty - check whether a hashtable is empty
- * @hashtable: hashtable to check
+ * cco_hash_empty - check whether a hashtable is empty
+ * @ht: hashtable to check
  *
- * This has to be a macro since HASH_BITS() will not work on pointers since
+ * This has to be a macro since CCO_HASH_BITS() will not work on pointers since
  * it calculates the size during preprocessing.
  */
-#define hash_empty(hashtable) __hash_empty(hashtable, HASH_SIZE(hashtable))
+#define cco_hash_empty(ht) __cco_hash_empty(ht, CCO_HASH_SIZE(ht))
 
 /**
- * hash_del - remove an object from a hashtable
+ * cco_hash_del - remove an object from a hashtable
  * @node: &struct hnode of the object to remove
  */
-static inline void hash_del(struct hnode *node) { hnode_del_init(node); }
-
-/**
- * hash_hashed - check whether an object is in any hashtable
- * @node: the &struct hlist_node of the object to be checked
- */
-static inline bool hash_hashed(struct hnode const *node) {
-  return !hlist_unhashed(node);
+static inline void cco_hash_del(struct cco_hnode *node) {
+  cco_hnode_del_init(node);
 }
 
 /**
- * hash_for_each_safe - iterate over a hashtable safe against removal of
+ * cco_hash_hashed - check whether an object is in any hashtable
+ * @node: the &struct hlist_node of the object to be checked
+ */
+static inline bool cco_hash_hashed(struct cco_hnode const *node) {
+  return !cco_hlist_unhashed(node);
+}
+
+/**
+ * cco_hash_for_each_safe - iterate over a hashtable safe against removal of
  * hash entry
  * @name: hashtable to iterate
  * @bkt: integer to use as bucket loop cursor
@@ -76,43 +78,46 @@ static inline bool hash_hashed(struct hnode const *node) {
  * @obj: the type * to use as a loop cursor for each entry
  * @member: the name of the hnode within the struct
  */
-#define hash_for_each_safe(name, bkt, tmp, obj, member)                        \
-  for ((bkt) = 0, obj = NULL; obj == NULL && (bkt) < HASH_SIZE(name); (bkt)++) \
-  __hlist_for_each_entry_safe(obj, tmp, &name[bkt], member)
+#define cco_hash_for_each_safe(name, bkt, tmp, obj, member)                    \
+  for ((bkt) = 0, obj = NULL; obj == NULL && (bkt) < CCO_HASH_SIZE(name);      \
+       (bkt)++)                                                                \
+  __cco_hlist_for_each_entry_safe(obj, tmp, &name[bkt], member)
 
 /**
- * hash_for_each_possible - iterate over all possible objects hashing to the
+ * cco_hash_for_each_possible - iterate over all possible objects hashing to the
  * same bucket
  * @name: hashtable to iterate
  * @obj: the type * to use as a loop cursor for each entry
  * @member: the name of the hnode within the struct
  * @key: the key of the objects to iterate over
  */
-#define hash_for_each_possible(name, obj, member, key)                         \
-  __hlist_for_each_entry(obj, &name[hash_min(key, HASH_BITS(name))], member)
+#define cco_hash_for_each_possible(name, obj, member, key)                     \
+  __cco_hlist_for_each_entry(                                                  \
+      obj, &name[cco_hash_min(key, CCO_HASH_BITS(name))], member)
 
 /**
- * hash_for_each_possible_safe - iterate over all possible objects hashing to
- * the same bucket safe against removals
+ * cco_hash_for_each_possible_safe - iterate over all possible objects hashing
+ * to the same bucket safe against removals
  * @name: hashtable to iterate
  * @obj: the type * to use as a loop cursor for each entry
  * @tmp: a &struct hnode used for temporary storage
  * @member: the name of the hnode within the struct
  * @key: the key of the objects to iterate over
  */
-#define hash_for_each_possible_safe(name, obj, tmp, member, key)               \
-  __hlist_for_each_entry_safe(obj, tmp, &name[hash_min(key, HASH_BITS(name))], \
-                              member)
+#define cco_hash_for_each_possible_safe(name, obj, tmp, member, key)           \
+  __cco_hlist_for_each_entry_safe(                                             \
+      obj, tmp, &name[cco_hash_min(key, CCO_HASH_BITS(name))], member)
 
 /**
- * hash_for_each - iterate over a hashtable
+ * cco_hash_for_each - iterate over a hashtable
  * @name: hashtable to iterate
  * @bkt: integer to use as bucket loop cursor
  * @obj: the type * to use as a loop cursor for each entry
  * @member: the name of the hnode within the struct
  */
-#define hash_for_each(name, bkt, obj, member)                                  \
-  for ((bkt) = 0, obj = NULL; obj == NULL && (bkt) < HASH_SIZE(name); (bkt)++) \
-  __hlist_for_each_entry(obj, &name[bkt], member)
+#define cco_hash_for_each(name, bkt, obj, member)                              \
+  for ((bkt) = 0, obj = NULL; obj == NULL && (bkt) < CCO_HASH_SIZE(name);      \
+       (bkt)++)                                                                \
+  __cco_hlist_for_each_entry(obj, &name[bkt], member)
 
 #endif

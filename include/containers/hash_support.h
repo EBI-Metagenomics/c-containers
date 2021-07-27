@@ -13,15 +13,15 @@
 #endif
 
 /**
- * fls32 - find last (most-significant) bit set
+ * __cco_fls32 - find last (most-significant) bit set
  * @x: the word to search
  *
  * This is defined the same way as ffs.
- * Note fls32(1) = 1, fls32(0x80000000) = 32.
+ * Note __cco_fls32(1) = 1, __cco_fls32(0x80000000) = 32.
  *
  * Undefined if no set bit exists, so code should check against 0 first.
  */
-static inline unsigned fls32(uint32_t x) {
+static inline unsigned __cco_fls32(uint32_t x) {
 
 #if __has_builtin(__builtin_clz)
   return (unsigned)((int)sizeof(int) * 8 - __builtin_clz(x));
@@ -53,24 +53,24 @@ static inline unsigned fls32(uint32_t x) {
 }
 
 /**
- * fls64 - find last (most-significant) set bit in a long word
- * @word: the word to search
+ * __cco_fls64 - find last (most-significant) set bit in a long word
+ * @x: the word to search
  *
  * Undefined if no set bit exists, so code should check against 0 first.
  */
-static inline unsigned fls64(uint64_t x) {
+static inline unsigned __cco_fls64(uint64_t x) {
 
 #if __has_builtin(__builtin_clzl)
   uint32_t h = x >> 32;
-  return h ? fls32(h) + 32 : fls32((uint32_t)x);
+  return h ? __cco_fls32(h) + 32 : __cco_fls32((uint32_t)x);
 #else
   return (unsigned)((int)sizeof(long) * 8 - __builtin_clzl(x));
 #endif
 }
 
-#define __CC_ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
+#define __CCO_ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 
-#define UNSIGNED(x)                                                            \
+#define __CCO_UNSIGNED(x)                                                      \
   _Generic((x), char                                                           \
            : (unsigned char)(x), signed char                                   \
            : (unsigned char)(x), short                                         \
@@ -81,7 +81,7 @@ static inline unsigned fls64(uint64_t x) {
            : (unsigned int)(x))
 
 /**
- * ilog2 - log base 2 of 32-bit or a 64-bit unsigned value
+ * __cco_ilog2 - log base 2 of 32-bit or a 64-bit unsigned value
  * @n: parameter
  *
  * constant-capable log of base 2 calculation
@@ -90,31 +90,38 @@ static inline unsigned fls64(uint64_t x) {
  *
  * selects the appropriately-sized optimised version depending on sizeof(n)
  */
-#define ilog2(x) (sizeof(x) <= 4 ? ilog2_u32(x) : ilog2_u64(x))
+#define __cco_ilog2(x)                                                         \
+  (sizeof(x) <= 4 ? __cco_ilog2_u32(x) : __cco_ilog2_u64(x))
 
-static inline unsigned ilog2_u32(uint32_t n) { return fls32(n) - 1; }
-
-static inline unsigned ilog2_u64(uint64_t n) { return fls64(n) - 1; }
-
-#define GOLDEN_RATIO_32 0x61C88647
-#define GOLDEN_RATIO_64 0x61C8864680B583EBull
-
-static inline uint32_t hash_32(uint32_t val, unsigned bits) {
-  /* High bits are more random, so use them. */
-  return val * GOLDEN_RATIO_32 >> (32 - bits);
+static inline unsigned __cco_ilog2_u32(uint32_t n) {
+  return __cco_fls32(n) - 1;
 }
 
-static inline uint32_t hash_64(uint64_t val, unsigned bits) {
-  /* High bits are more random, so use them. */
-  return (uint32_t)(val * GOLDEN_RATIO_64 >> (64 - bits));
+static inline unsigned __cco_ilog2_u64(uint64_t n) {
+  return __cco_fls64(n) - 1;
 }
 
-/* Use hash_32 when possible to allow for fast 32bit hashing in 64bit kernels.
+#define __CCO_GOLDEN_RATIO_32 0x61C88647
+#define __CCO_GOLDEN_RATIO_64 0x61C8864680B583EBull
+
+static inline uint32_t cco_hash_32(uint32_t val, unsigned bits) {
+  /* High bits are more random, so use them. */
+  return val * __CCO_GOLDEN_RATIO_32 >> (32 - bits);
+}
+
+static inline uint32_t cco_hash_64(uint64_t val, unsigned bits) {
+  /* High bits are more random, so use them. */
+  return (uint32_t)(val * __CCO_GOLDEN_RATIO_64 >> (64 - bits));
+}
+
+/* Use cco_hash_32 when possible to allow for fast 32bit hashing in 64bit
+ * kernels.
  */
-#define hash_min(x, bits)                                                      \
-  (sizeof(x) <= 4 ? hash_32(UNSIGNED(x), bits) : hash_64(UNSIGNED(x), bits))
+#define cco_hash_min(x, bits)                                                  \
+  (sizeof(x) <= 4 ? cco_hash_32(__CCO_UNSIGNED(x), bits)                       \
+                  : cco_hash_64(__CCO_UNSIGNED(x), bits))
 
-#define HASH_BITS(name) ilog2(HASH_SIZE(name))
-#define HASH_SIZE(name) (__CC_ARRAY_SIZE(name))
+#define CCO_HASH_BITS(name) __cco_ilog2(CCO_HASH_SIZE(name))
+#define CCO_HASH_SIZE(name) (__CCO_ARRAY_SIZE(name))
 
 #endif

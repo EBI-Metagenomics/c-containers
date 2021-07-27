@@ -3,23 +3,24 @@
 
 #include <stddef.h>
 
-struct node {
-  struct node *next;
+struct cco_node {
+  struct cco_node *next;
 };
 
-#define NODE_INIT()                                                            \
+#define CCO_NODE_INIT()                                                        \
   { NULL }
 
-static inline void node_add_next(struct node *where, struct node *novel) {
+static inline void cco_node_add_next(struct cco_node *where,
+                                     struct cco_node *novel) {
   novel->next = where->next;
   where->next = novel;
 }
 
-static inline void node_del(struct node *prev, struct node *node) {
+static inline void cco_node_del(struct cco_node *prev, struct cco_node *node) {
   prev->next = node->next;
   node->next = NULL;
 }
 
-static inline void node_init(struct node *node) { node->next = NULL; }
+static inline void cco_node_init(struct cco_node *node) { node->next = NULL; }
 
 #endif

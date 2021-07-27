@@ -5,31 +5,34 @@
 #include "containers/node.h"
 #include <stdbool.h>
 
-struct stack {
-  struct node head;
+struct cco_stack {
+  struct cco_node head;
 };
 
-#define STACK_INIT()                                                           \
-  { NODE_INIT() }
+#define CCO_STACK_INIT()                                                       \
+  { CCO_NODE_INIT() }
 
-static inline bool stack_empty(struct stack const *stack) {
+static inline bool cco_stack_empty(struct cco_stack const *stack) {
   return stack->head.next == NULL;
 }
 
-static inline void stack_init(struct stack *stack) { node_init(&stack->head); }
-
-static inline struct iter stack_iter(struct stack *stack) {
-  return (struct iter){stack->head.next, NULL};
+static inline void cco_stack_init(struct cco_stack *stack) {
+  cco_node_init(&stack->head);
 }
 
-static inline struct node *stack_pop(struct stack *stack) {
-  struct node *node = stack->head.next;
-  node_del(&stack->head, node);
+static inline struct cco_iter cco_stack_iter(struct cco_stack *stack) {
+  return (struct cco_iter){stack->head.next, NULL};
+}
+
+static inline struct cco_node *cco_stack_pop(struct cco_stack *stack) {
+  struct cco_node *node = stack->head.next;
+  cco_node_del(&stack->head, node);
   return node;
 }
 
-static inline void stack_put(struct stack *stack, struct node *novel) {
-  node_add_next(&stack->head, novel);
+static inline void cco_stack_put(struct cco_stack *stack,
+                                 struct cco_node *novel) {
+  cco_node_add_next(&stack->head, novel);
 }
 
 #endif

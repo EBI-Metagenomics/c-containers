@@ -48,7 +48,7 @@ target_include_directories(
                 $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 install(TARGETS cco EXPORT cco-targets)
-install(DIRECTORY src/cco/ DESTINATION include/cco)
+install(DIRECTORY include/cco/ DESTINATION include/cco)
 install(
   EXPORT cco-targets
   FILE cco-targets.cmake

@@ -7,7 +7,7 @@ Containers for C language based on Linux kernel ones.
 On Linux, macOS, and Windows (Git bash terminal) open a terminal and install it
 via
 ```bash
-/bin/bash -c "$(curl -fsSL https://git.io/JerYI)" -s EBI-Metagenomics/c-containers
+bash -c "$(curl -fsSL https://git.io/Jz7Oa)" -s EBI-Metagenomics/c-containers
 ```
 
 ## Authors

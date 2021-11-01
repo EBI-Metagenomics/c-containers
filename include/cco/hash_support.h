@@ -91,7 +91,9 @@ static inline unsigned __cco_fls64(uint64_t x) {
  * selects the appropriately-sized optimised version depending on sizeof(n)
  */
 #define __cco_ilog2(x)                                                         \
-  (sizeof(x) <= 4 ? __cco_ilog2_u32(x) : __cco_ilog2_u64(x))
+  (__builtin_constant_p(x) ? ((x) < 2 ? 0 : 63 - __builtin_clzll(x))           \
+   : sizeof(x) <= 4        ? __cco_ilog2_u32(x)                                \
+                           : __cco_ilog2_u64(x))
 
 static inline unsigned __cco_ilog2_u32(uint32_t n) {
   return __cco_fls32(n) - 1;

@@ -68,7 +68,22 @@ static inline unsigned __cco_fls64(uint64_t x) {
 #endif
 }
 
-#define __CCO_ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
+/*
+ * Force a compilation error if condition is true, but also produce a
+ * result (of value 0 and type int), so the expression can be used
+ * e.g. in a structure initializer (or where-ever else comma expressions
+ * aren't permitted).
+ */
+#define __CCO_BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int : (-!!(e)); })))
+
+/* Are two types/vars the same type (ignoring qualifiers)? */
+#define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+
+/* &a[0] degrades to a pointer: a different type from an array */
+#define __must_be_array(a) __CCO_BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+
+#define __CCO_ARRAY_SIZE(arr)                                                  \
+  (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
 
 #define __CCO_UNSIGNED(x)                                                      \
   _Generic((x), char                                                           \
@@ -123,7 +138,7 @@ static inline uint32_t cco_hash_64(uint64_t val, unsigned bits) {
   (sizeof(x) <= 4 ? cco_hash_32(__CCO_UNSIGNED(x), bits)                       \
                   : cco_hash_64(__CCO_UNSIGNED(x), bits))
 
-#define CCO_HASH_BITS(name) __cco_ilog2(CCO_HASH_SIZE(name))
 #define CCO_HASH_SIZE(name) (__CCO_ARRAY_SIZE(name))
+#define CCO_HASH_BITS(name) __cco_ilog2(CCO_HASH_SIZE(name))
 
 #endif

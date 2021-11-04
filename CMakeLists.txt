@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 project(
   cco
-  VERSION 0.0.7
+  VERSION 0.0.8
   LANGUAGES C)
 
 # Generate compile_commands.json file

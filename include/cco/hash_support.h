@@ -61,7 +61,7 @@ static inline unsigned __cco_fls32(uint32_t x) {
 static inline unsigned __cco_fls64(uint64_t x) {
 
 #if __has_builtin(__builtin_clzl)
-  uint32_t h = x >> 32;
+  uint32_t h = (uint32_t) (x >> 32);
   return h ? __cco_fls32(h) + 32 : __cco_fls32((uint32_t)x);
 #else
   return (unsigned)((int)sizeof(long) * 8 - __builtin_clzl(x));

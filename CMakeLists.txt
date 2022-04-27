@@ -1,66 +1,41 @@
-cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
+
 project(
   cco
   VERSION 0.0.8
   LANGUAGES C)
 
-# Generate compile_commands.json file
+include(cmake/compiler-options.cmake)
+include(cmake/sanitizers.cmake)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-  # /wd5105:
-  # https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/c5105?view=msvc-160
-  set(WARNING_FLAGS /W3 /wd5105)
-else()
-  set(WARNING_FLAGS
-      -Wall
-      -Wextra
-      -Wstrict-prototypes
-      -Wshadow
-      -Wconversion
-      -Wmissing-prototypes
-      -Wno-unused-parameter
-      -Wsign-conversion
-      -Wno-unused-function)
-
-  if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    list(APPEND WARNING_FLAGS -Wno-gnu-designator -Wno-empty-translation-unit
-         -Wno-gnu-statement-expression -Wno-nullability-extension)
-  endif()
-endif()
-
-option(CI_BUILD "CI, extra flags will be set" OFF)
-if(CI_BUILD)
-  message(STATUS "CI build enabled")
-  if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/WX)
-  else()
-    add_compile_options(-Werror)
-  endif()
-endif()
-
-add_library(cco INTERFACE)
-add_library(CCO::cco ALIAS cco)
-target_compile_features(cco INTERFACE c_std_11)
-target_compile_options(cco INTERFACE ${WARNING_FLAGS})
+add_library(${PROJECT_NAME} INTERFACE)
+add_library(CCO::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+target_compile_features(${PROJECT_NAME} INTERFACE c_std_11)
 target_include_directories(
-  cco INTERFACE $<INSTALL_INTERFACE:include>
-                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+  ${PROJECT_NAME}
+  INTERFACE $<INSTALL_INTERFACE:include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-install(TARGETS cco EXPORT cco-targets)
-install(DIRECTORY include/cco/ DESTINATION include/cco)
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-targets)
+install(DIRECTORY include/${PROJECT_NAME}/ DESTINATION include/${PROJECT_NAME})
 install(
-  EXPORT cco-targets
-  FILE cco-targets.cmake
+  EXPORT ${PROJECT_NAME}-targets
+  FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE CCO::
-  DESTINATION lib/cmake/cco)
+  DESTINATION lib/cmake/${PROJECT_NAME})
+
 include(CMakePackageConfigHelpers)
+
 configure_package_config_file(
-  cco-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cco-config.cmake
-  INSTALL_DESTINATION lib/cmake/cco
+  ${PROJECT_NAME}-config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
   NO_SET_AND_CHECK_MACRO)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cco-config.cmake
-        DESTINATION lib/cmake/cco)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        DESTINATION lib/cmake/${PROJECT_NAME})
 
 enable_testing()
 add_subdirectory(test)

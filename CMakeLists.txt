@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 project(
   cco
-  VERSION 0.0.8
+  VERSION 0.0.9
   LANGUAGES C)
 
 include(cmake/compiler-options.cmake)
@@ -49,7 +49,6 @@ set(CPACK_PACKAGE_VENDOR "EBI-Metagenomics")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
     "Containers for C language based on Linux kernel ones")
 set(CPACK_PACKAGE_CONTACT "Danilo Horta")
-set(CPACK_SOURCE_GENERATOR STGZ)
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})

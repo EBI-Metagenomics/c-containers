@@ -2,8 +2,23 @@ cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 project(
   cco
-  VERSION 0.0.9
+  VERSION 0.0.10
   LANGUAGES C)
+
+set(CCO_MAIN_PROJECT OFF)
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+  set(CCO_MAIN_PROJECT ON)
+endif()
+
+if(CCO_MAIN_PROJECT)
+  set(CCO_BUILD_TESTS_DEFAULT ON)
+else()
+  set(CCO_BUILD_TESTS_DEFAULT OFF)
+endif()
+
+option(CCO_BUILD_TESTS "Build the unit tests" ${CCO_BUILD_TESTS_DEFAULT})
+message(STATUS "CCO_MAIN_PROJECT: " ${CCO_MAIN_PROJECT})
+message(STATUS "CCO_BUILD_TESTS: " ${CCO_BUILD_TESTS})
 
 include(cmake/compiler-options.cmake)
 include(cmake/sanitizers.cmake)
@@ -41,8 +56,10 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.md
               ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
         DESTINATION share/docs/${PROJECT_NAME})
 
-enable_testing()
-add_subdirectory(test)
+if(CCO_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(test)
+endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "EBI-Metagenomics")

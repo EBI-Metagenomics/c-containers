@@ -9,6 +9,7 @@ function die {
 
 echo "#ifndef CCO_H"
 echo "#define CCO_H"
+echo
 
 {
     for header in $headers; do
@@ -46,4 +47,5 @@ echo "#define CCO_H"
     done
 } | tail -r | sed '/./,$!d' | tail -r
 
+echo
 echo "#endif"

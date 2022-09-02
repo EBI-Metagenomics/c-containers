@@ -16,7 +16,7 @@ echo
         module=${header%.*}
         first_line=$(head -n 1 "$module.h")
         second_line=$(head -n 2 "$module.h" | tail -n 1)
-        last_line=$(tail -r "$module.h" | head -n 1)
+        last_line=$(tac "$module.h" | head -n 1)
 
         MODULE=$(echo "$module" | tr '[:lower:]' '[:upper:]')
 
@@ -30,14 +30,14 @@ echo
         echo "/* ____$dashes */" | sed "s/${dashes:0:$size}/$section/" | sed 's/____/----/'
 
         tail -n +3 "$module.h" |
-            tail -r |
+            tac |
             tail -n +2 |
-            tail -r |
+            tac |
             sed 's/^#include ".*"$//' |
             sed '/./,$!d' |
-            tail -r |
+            tac |
             sed '/./,$!d' |
-            tail -r
+            tac
 
         section=" $module module end "
         size=${#section}
@@ -45,7 +45,7 @@ echo
 
         echo
     done
-} | tail -r | sed '/./,$!d' | tail -r
+} | tac | sed '/./,$!d' | tac
 
 echo
 echo "#endif"

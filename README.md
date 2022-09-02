@@ -2,13 +2,10 @@
 
 Containers for C language based on Linux kernel ones.
 
-## Install
+## Usage
 
-On Linux, macOS, and Windows (Git bash terminal) open a terminal and install it
-via
-```bash
-bash -c "$(curl -fsSL https://git.io/Jz7Oa)" -s EBI-Metagenomics/c-containers
-```
+Download the latest release from GitHub and include the `cco.h`
+into your project.
 
 ## Authors
 

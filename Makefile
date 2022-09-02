@@ -1,6 +1,6 @@
 .POSIX:
 
-CCO_VERSION := 0.0.1
+CCO_VERSION := 0.1.0
 
 LIB      = cco.h
 HDR      = cco_compiler.h cco_of.h cco_hash_support.h cco_node.h cco_hnode.h cco_hlist.h cco_hash.h cco_iter.h cco_queue.h cco_stack.h

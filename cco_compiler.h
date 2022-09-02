@@ -11,8 +11,10 @@
  * by hand.
  */
 #ifndef __has_builtin
+
 #define __has_builtin(x) (0)
-#endif
+
+#else
 
 #if !__has_builtin(__builtin_types_compatible_p)
 #error "__builtin_types_compatible_p not available"
@@ -24,6 +26,8 @@
 
 #if !__has_builtin(__builtin_constant_p)
 #error "__builtin_constant_p not available"
+#endif
+
 #endif
 
 #endif

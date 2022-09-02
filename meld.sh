@@ -7,6 +7,15 @@ function die {
     exit 1
 }
 
+function flip {
+    if type tac >/dev/null 2>&1; then
+        tac "$@"
+    else
+        tr -r "$@"
+    fi
+}
+export -f flip
+
 echo "#ifndef CCO_H"
 echo "#define CCO_H"
 echo
@@ -16,7 +25,7 @@ echo
         module=${header%.*}
         first_line=$(head -n 1 "$module.h")
         second_line=$(head -n 2 "$module.h" | tail -n 1)
-        last_line=$(tac "$module.h" | head -n 1)
+        last_line=$(flip "$module.h" | head -n 1)
 
         MODULE=$(echo "$module" | tr '[:lower:]' '[:upper:]')
 
@@ -30,14 +39,14 @@ echo
         echo "/* ____$dashes */" | sed "s/${dashes:0:$size}/$section/" | sed 's/____/----/'
 
         tail -n +3 "$module.h" |
-            tac |
+            flip |
             tail -n +2 |
-            tac |
+            flip |
             sed 's/^#include ".*"$//' |
             sed '/./,$!d' |
-            tac |
+            flip |
             sed '/./,$!d' |
-            tac
+            flip
 
         section=" $module module end "
         size=${#section}
@@ -45,7 +54,7 @@ echo
 
         echo
     done
-} | tac | sed '/./,$!d' | tac
+} | flip | sed '/./,$!d' | flip
 
 echo
 echo "#endif"

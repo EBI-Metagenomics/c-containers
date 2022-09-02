@@ -1,8 +1,8 @@
 #ifndef CCO_ITER_H
 #define CCO_ITER_H
 
-#include "cco/node.h"
-#include "cco/of.h"
+#include "cco_node.h"
+#include "cco_of.h"
 
 struct cco_iter {
   struct cco_node *curr;

@@ -1,7 +1,7 @@
 #ifndef CCO_HLIST_H
 #define CCO_HLIST_H
 
-#include "cco/hnode.h"
+#include "cco_hnode.h"
 
 struct cco_hlist {
   struct cco_hnode *first;

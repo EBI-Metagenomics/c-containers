@@ -1,8 +1,8 @@
 #ifndef CCO_STACK_H
 #define CCO_STACK_H
 
-#include "cco/iter.h"
-#include "cco/node.h"
+#include "cco_iter.h"
+#include "cco_node.h"
 #include <stdbool.h>
 
 struct cco_stack {

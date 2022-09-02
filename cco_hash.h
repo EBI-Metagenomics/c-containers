@@ -1,9 +1,9 @@
 #ifndef CCO_HASH_H
 #define CCO_HASH_H
 
-#include "cco/hash_support.h"
-#include "cco/hlist.h"
-#include "cco/of.h"
+#include "cco_hash_support.h"
+#include "cco_hlist.h"
+#include "cco_of.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

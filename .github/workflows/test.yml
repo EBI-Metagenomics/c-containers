@@ -1,0 +1,18 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Test on ${{ matrix.os }} with build type ${{ matrix.build_type }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04, macos-12, macos-11]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: make
+      run: make
+    - name: make test
+      run: make test

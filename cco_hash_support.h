@@ -69,13 +69,15 @@ static inline unsigned __cco_fls64(uint64_t x) {
 #define __CCO_BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int : (-!!(e)); })))
 
 /* Are two types/vars the same type (ignoring qualifiers)? */
-#define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+#define __cco_same_type(a, b)                                                  \
+  __builtin_types_compatible_p(__typeof__(a), __typeof__(b))
 
 /* &a[0] degrades to a pointer: a different type from an array */
-#define __must_be_array(a) __CCO_BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+#define __cco_must_be_array(a)                                                 \
+  __CCO_BUILD_BUG_ON_ZERO(__cco_same_type((a), &(a)[0]))
 
 #define __CCO_ARRAY_SIZE(arr)                                                  \
-  (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+  (sizeof(arr) / sizeof((arr)[0]) + __cco_must_be_array(arr))
 
 #define __CCO_UNSIGNED(x)                                                      \
   _Generic((x), char                                                           \

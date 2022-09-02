@@ -11,7 +11,7 @@ function flip {
     if type tac >/dev/null 2>&1; then
         tac "$@"
     else
-        tr -r "$@"
+        tail -r "$@"
     fi
 }
 export -f flip

@@ -1,6 +1,6 @@
 # Containers library
 
-Containers for C language based on Linux kernel ones.
+Containers for C language based on the Linux kernel ones.
 
 ## Usage
 

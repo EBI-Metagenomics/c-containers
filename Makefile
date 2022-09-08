@@ -2,35 +2,50 @@
 
 CCO_VERSION := 0.1.0
 
-LIB      = cco.h
-HDR      = cco_compiler.h cco_of.h cco_hash_support.h cco_node.h cco_hnode.h cco_hlist.h cco_hash.h cco_iter.h cco_queue.h cco_stack.h
-TEST_SRC = test_hash.c test_queue.c test_stack.c
-TEST_OBJ = $(TEST_SRC:.c=.o)
-TEST_EXE = $(TEST_SRC:.c=)
+CC ?= gcc
+CFLAGS := $(CFLAGS) -std=c99 -Wall -Wextra
+HDR := cco_compiler.h cco_of.h cco_hash_support.h cco_node.h cco_hnode.h cco_hlist.h cco_hash.h cco_iter.h cco_queue.h cco_stack.h
 
-$(LIB): $(HDR) meld.sh
-	./meld.sh $(HDR) > $@
+all: cco.h
 
-%.o: %.c $(LIB)
-	$(CC) $(CFLAGS) -c $<
+cco.h: $(HDR) | meld.sh
+	./meld.sh $^ > $@
 
-%: %.o $(LIB)
-	$(CC) $(CFLAGS) -o $@ $^
+test_hash.o: test/hash.c | cco.h
+	$(CC) $(CFLAGS) -I. -c $< -o $@
 
-all: $(LIB)
+test_hash: test_hash.o | cco.h
+	$(CC) $(CFLAGS) $< -o $@
 
-test: $(TEST_EXE) $(LIB)
+test_queue.o: test/queue.c | cco.h
+	$(CC) $(CFLAGS) -I. -c $< -o $@
+
+test_queue: test_queue.o | cco.h
+	$(CC) $(CFLAGS) $< -o $@
+
+test_stack.o: test/stack.c | cco.h
+	$(CC) $(CFLAGS) -I. -c $< -o $@
+
+test_stack: test_stack.o | cco.h
+	$(CC) $(CFLAGS) $< -o $@
+
+check: test_hash test_queue test_stack
 	./test_hash
 	./test_queue
 	./test_stack
 
-clean:
-	rm -f $(LIB) $(TEST_OBJ) $(TEST_EXE)
+test: check
 
-dist:
+dist: clean cco.h
 	mkdir -p cco-$(CCO_VERSION)
-	cp -R Makefile README.md LICENSE $(LIB) cco-$(CCO_VERSION)
+	cp -R README.md LICENSE cco.h cco-$(CCO_VERSION)
 	tar -cf - cco-$(CCO_VERSION) | gzip > cco-$(CCO_VERSION).tar.gz
 	rm -rf cco-$(CCO_VERSION)
 
-.PHONY: all test clean dist
+distclean:
+	rm -f jx-$(CCO_VERSION).tar.gz
+
+clean: distclean
+	rm -f cco.h *.o test_hash test_queue test_stack
+
+.PHONY: all check test dist distclean clean

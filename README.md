@@ -5,7 +5,7 @@ Containers for C language based on the Linux kernel ones.
 ## Usage
 
 Download the latest release from GitHub and include the `cco.h`
-into your project.
+header into your project.
 
 ## Authors
 

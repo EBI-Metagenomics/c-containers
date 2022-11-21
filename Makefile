@@ -1,6 +1,6 @@
 .POSIX:
 
-CCO_VERSION := 0.1.1
+CCO_VERSION := 0.1.2
 
 CC ?= gcc
 CFLAGS := $(CFLAGS) -std=c99 -Wall -Wextra

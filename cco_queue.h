@@ -28,6 +28,8 @@ static inline struct cco_iter cco_queue_iter(struct cco_queue *queue) {
 static inline struct cco_node *cco_queue_pop(struct cco_queue *queue) {
   struct cco_node *node = queue->tail;
   queue->tail = queue->tail->next;
+  if (queue->tail == &queue->head)
+      queue->head.next = &queue->head;
   return node;
 }
 

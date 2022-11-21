@@ -18,6 +18,15 @@ int main(void) {
 
   errors += !cco_queue_empty(&queue);
   cco_queue_put(&queue, &foo1.node);
+  errors += cco_queue_empty(&queue);
+  cco_queue_pop(&queue);
+  errors += !cco_queue_empty(&queue);
+
+  cco_queue_put(&queue, &foo2.node);
+  errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 2;
+  cco_queue_pop(&queue);
+
+  cco_queue_put(&queue, &foo1.node);
   cco_queue_put(&queue, &foo2.node);
   cco_queue_put(&queue, &foo3.node);
 

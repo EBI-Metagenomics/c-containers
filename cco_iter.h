@@ -5,6 +5,7 @@
 #include "cco_of.h"
 
 struct cco_iter {
+  struct cco_node *prev;
   struct cco_node *curr;
   struct cco_node const *end;
 };

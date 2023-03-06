@@ -13,35 +13,46 @@ struct cco_queue {
 #define CCO_QUEUE_INIT(name)                                                   \
   { (struct cco_node){&name.head}, &name.head }
 
-static inline bool cco_queue_empty(struct cco_queue const *queue) {
-  return &queue->head == queue->tail;
+static inline void cco_queue_init(struct cco_queue *x) {
+  x->tail = x->head.next = &x->head;
 }
 
-static inline void cco_queue_init(struct cco_queue *queue) {
-  queue->tail = queue->head.next = &queue->head;
+static inline struct cco_iter cco_queue_iter(struct cco_queue *x) {
+  return (struct cco_iter){&x->head, x->tail, &x->head};
 }
 
-static inline struct cco_iter cco_queue_iter(struct cco_queue *queue) {
-  return (struct cco_iter){queue->tail, &queue->head};
+static inline bool cco_queue_empty(struct cco_queue const *x) {
+  struct cco_iter it = cco_queue_iter((struct cco_queue *)x);
+  return it.prev == it.curr;
+}
+
+static inline void cco_queue_put(struct cco_queue *x, struct cco_node *novel) {
+  struct cco_node *a = x->tail;
+  struct cco_node *b = x->tail->next;
+  struct cco_node *c = novel;
+  struct cco_node *tmp = b->next;
+
+  c->next = b;
+  b->next = a;
+  a->next = c;
+
+  x->tail = a->next->next->next;
+
+  b->next = tmp;
+  a->next = c->next;
+
+  struct cco_node *next = x->head.next;
+  next->next = novel;
+  novel->next = &x->head;
+  x->head.next = novel;
 }
 
 static inline struct cco_node *cco_queue_pop(struct cco_queue *queue) {
   struct cco_node *node = queue->tail;
   queue->tail = queue->tail->next;
   if (queue->tail == &queue->head)
-      queue->head.next = &queue->head;
+    queue->head.next = &queue->head;
   return node;
-}
-
-static inline void cco_queue_put(struct cco_queue *queue,
-                                 struct cco_node *novel) {
-  if (cco_queue_empty(queue))
-    queue->tail = novel;
-
-  struct cco_node *next = queue->head.next;
-  next->next = novel;
-  novel->next = &queue->head;
-  queue->head.next = novel;
 }
 
 static inline void cco_queue_put_first(struct cco_queue *queue,

@@ -8,7 +8,7 @@ struct foo {
 };
 
 int main(void) {
-  struct cco_stack stack = CCO_STACK_INIT();
+  struct cco_stack stack = CCO_STACK_INIT(stack);
 
   struct foo foo1 = {1, CCO_NODE_INIT()};
   struct foo foo2 = {2, CCO_NODE_INIT()};

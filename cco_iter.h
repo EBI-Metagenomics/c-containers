@@ -10,11 +10,11 @@ struct cco_iter {
   struct cco_node const *end;
 };
 
-static inline struct cco_node *cco_iter_next(struct cco_iter *iter) {
-  if (!iter || iter->curr == iter->end)
+static inline struct cco_node *cco_iter_next(struct cco_iter *x) {
+  if (x->curr == x->end)
     return NULL;
-  struct cco_node *node = iter->curr;
-  iter->curr = node->next;
+  struct cco_node *node = x->curr;
+  x->curr = node->next;
   return node;
 }
 

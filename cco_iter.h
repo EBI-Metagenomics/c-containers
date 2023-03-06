@@ -22,10 +22,10 @@ static inline struct cco_node *cco_iter_next(struct cco_iter *iter) {
 #define cco_iter_next_entry(iter, entry, member)                               \
   cco_of_safe(cco_iter_next(iter), __typeof__(*entry), member)
 
-#define cco_iter_for_each(pos, iter, member)                                   \
+#define cco_iter_for_each(pos, iter)                                           \
   for (pos = cco_iter_next(iter); pos; pos = cco_iter_next(iter))
 
-#define cco_iter_for_each_safe(pos, tmp, iter, member)                         \
+#define cco_iter_for_each_safe(pos, tmp, iter)                                 \
   for (pos = cco_iter_next(iter), tmp = cco_iter_next(iter); pos;              \
        pos = tmp, tmp = iter_next(iter))
 

@@ -28,7 +28,7 @@ static inline struct cco_node *cco_iter_next(struct cco_iter *iter) {
 
 #define cco_iter_for_each_safe(pos, tmp, iter)                                 \
   for (pos = cco_iter_next(iter), tmp = cco_iter_next(iter); pos;              \
-       pos = tmp, tmp = iter_next(iter))
+       pos = tmp, tmp = cco_iter_next(iter))
 
 #define cco_iter_for_each_entry(entry, iter, member)                           \
   for (entry = cco_iter_next_entry(iter, entry, member); entry;                \

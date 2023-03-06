@@ -39,6 +39,15 @@ int main(void) {
     val++;
   }
 
+  iter = cco_queue_iter(&queue);
+  struct cco_node *pos = NULL;
+  val = vals;
+  cco_iter_for_each(pos, &iter) {
+    struct foo *entry = cco_of(pos, struct foo, node);
+    errors += entry->val != *val;
+    val++;
+  }
+
   errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 1;
   errors += cco_queue_empty(&queue);
   errors += cco_of(cco_queue_pop(&queue), struct foo, node)->val != 2;

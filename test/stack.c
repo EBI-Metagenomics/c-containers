@@ -28,6 +28,15 @@ int main(void) {
     val++;
   }
 
+  iter = cco_stack_iter(&stack);
+  struct cco_node *pos = NULL;
+  val = vals;
+  cco_iter_for_each(pos, &iter) {
+    struct foo *entry = cco_of(pos, struct foo, node);
+    errors += entry->val != *val;
+    val++;
+  }
+
   errors += cco_of(cco_stack_pop(&stack), struct foo, node)->val != 3;
   errors += cco_stack_empty(&stack);
   errors += cco_of(cco_stack_pop(&stack), struct foo, node)->val != 2;

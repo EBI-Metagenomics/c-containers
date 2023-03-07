@@ -7,14 +7,16 @@
 
 struct cco_stack {
   struct cco_node head;
-  struct cco_node *tail;
+  struct cco_node tail;
 };
 
 #define CCO_STACK_INIT(name)                                                   \
-  { (struct cco_node){&name.head}, &name.head }
+  {                                                                            \
+    {&name.head}, { &name.head }                                               \
+  }
 
 static inline void cco_stack_init(struct cco_stack *x) {
-  x->tail = x->head.next = &x->head;
+  x->tail.next = x->head.next = &x->head;
 }
 
 static inline struct cco_iter cco_stack_iter(struct cco_stack *x) {
@@ -34,6 +36,13 @@ static inline struct cco_node *cco_stack_pop(struct cco_stack *x) {
   struct cco_node *node = x->head.next;
   cco_node_del(&x->head, node);
   return node;
+}
+
+static inline void cco_stack_cut(struct cco_stack *x, struct cco_iter *it) {
+  if (x->tail.next == it->curr)
+    x->tail.next = it->prev;
+  it->prev->next = it->curr->next;
+  it->curr = NULL;
 }
 
 #endif

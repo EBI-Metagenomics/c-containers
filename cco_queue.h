@@ -47,21 +47,21 @@ static inline void cco_queue_put(struct cco_queue *x, struct cco_node *novel) {
   x->head.next = novel;
 }
 
-static inline struct cco_node *cco_queue_pop(struct cco_queue *queue) {
-  struct cco_node *node = queue->tail;
-  queue->tail = queue->tail->next;
-  if (queue->tail == &queue->head)
-    queue->head.next = &queue->head;
+static inline struct cco_node *cco_queue_pop(struct cco_queue *x) {
+  struct cco_node *node = x->tail;
+  x->tail = x->tail->next;
+  if (x->tail == &x->head)
+    x->head.next = &x->head;
   return node;
 }
 
-static inline void cco_queue_put_first(struct cco_queue *queue,
+static inline void cco_queue_put_first(struct cco_queue *x,
                                        struct cco_node *novel) {
-  struct cco_node *tail = queue->tail;
+  struct cco_node *tail = x->tail;
   novel->next = tail;
-  queue->tail = novel;
-  if (queue->head.next == &queue->head)
-    queue->head.next = novel;
+  x->tail = novel;
+  if (x->head.next == &x->head)
+    x->head.next = novel;
 }
 
 #endif

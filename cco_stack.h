@@ -30,9 +30,9 @@ static inline void cco_stack_put(struct cco_stack *x, struct cco_node *novel) {
   cco_node_add_next(&x->head, novel);
 }
 
-static inline struct cco_node *cco_stack_pop(struct cco_stack *stack) {
-  struct cco_node *node = stack->head.next;
-  cco_node_del(&stack->head, node);
+static inline struct cco_node *cco_stack_pop(struct cco_stack *x) {
+  struct cco_node *node = x->head.next;
+  cco_node_del(&x->head, node);
   return node;
 }
 

@@ -62,5 +62,14 @@ int main(void) {
   errors += cco_of(cco_stack_pop(&stack), struct foo, node)->val != 3;
   errors += !cco_stack_empty(&stack);
 
+  cco_stack_put(&stack, &foo1.node);
+  cco_stack_put(&stack, &foo2.node);
+  cco_stack_put(&stack, &foo3.node);
+
+  iter = cco_stack_iter(&stack);
+  errors += cco_of(cco_iter_next(&iter), struct foo, node)->val != 3;
+  errors += cco_of(cco_iter_next(&iter), struct foo, node)->val != 2;
+  errors += cco_of(cco_iter_next(&iter), struct foo, node)->val != 1;
+
   return errors;
 }

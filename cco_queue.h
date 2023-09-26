@@ -19,7 +19,7 @@ static inline void cco_queue_init(struct cco_queue *x) {
   x->tail.next = x->head.next = &x->head;
 }
 
-static inline struct cco_iter cco_queue_iter(struct cco_queue *x) {
+static inline struct cco_iter cco_queue_iter(struct cco_queue const *x) {
   return (struct cco_iter){&x->head, x->tail.next, &x->head};
 }
 
